@@ -6,7 +6,10 @@
             v-for="movie in movies"
             :key="movie.imdbID"
             cols="12"
-            sm="3">
+            xl="2"
+            lg="3"
+            md="4"
+            sm="6">
                 <Movie 
                 :poster="movie.poster_path" 
                 :title="movie.title" 

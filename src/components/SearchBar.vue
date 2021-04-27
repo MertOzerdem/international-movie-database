@@ -7,8 +7,14 @@
         contain 
         height="45px"
         width="45px"/>
-        <v-toolbar dense cols="10" @keyup.enter="targetKeywordEntered">
-            <v-text-field hide-details prepend-icon="mdi-magnify" single-line @change="keyword = $event">
+        <v-toolbar 
+        dense 
+        @keyup.enter="targetKeywordEntered">
+            <v-text-field 
+            hide-details 
+            append-icon="mdi-magnify" 
+            single-line 
+            @change="keyword = $event">
             </v-text-field>
         </v-toolbar>
     </v-card>
