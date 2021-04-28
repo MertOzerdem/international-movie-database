@@ -5,7 +5,7 @@ const cacheName = 'v1'
 self.addEventListener('install', event => {
     console.info('Service Worker: Installed', event);
     event.waitUntil(
-        caches.open(cacheName).then(cache => cache.add('/app.js'))
+        caches.open(cacheName).then(cache => cache.add('/main.js'))
     );
 });
 
@@ -30,37 +30,6 @@ self.addEventListener('activate', event => {
 });
 
 // Call Fetch Event
-// self.addEventListener('fetch', e => {
-//     console.log('Service Worker: Fetching');
-
-//     if (e.request.method !== 'GET') {
-//         console.log('WORKER: fetch event ignored.', e.request.method, event.request.url);
-//         return;
-//     }
-
-//     e.respondWith(
-//         fetch(e.request)
-//         .then(res => {
-//             console.log('inside fetch')
-//             // Make copy/clone of response
-//             const resClone = res.clone()
-//             // Open cahce
-//             caches.open(cacheName).then(cache => {
-//                 // Add response to cache
-//                 console.log('resClone: ', resClone)
-//                 console.log('e.request: ', e.request)
-//                 cache.put(e.request, resClone).then(() => {
-//                     console.log('we put it')
-//                 })
-//             });
-
-//             return res
-//         })
-//         // eslint-disable-next-line no-unused-vars
-//         .catch(err => caches.match(e.request).then(res => res))
-//     );
-// });
-
 var version = 'v1::';
 
 self.addEventListener("fetch", function (event) {

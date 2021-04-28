@@ -26,7 +26,6 @@
 <script>
 import Movie from '@/components/Movie'
 import SearchBar from '@/components/SearchBar'
-// import axios from "axios";
 
 export default {
     components: {
@@ -36,41 +35,21 @@ export default {
     data () {
         return {
             movies: [],
+            searchDB: {}
         }
     },
     methods: {
-        searchMovies (keyword) {
-            fetch('https://api.themoviedb.org/3/search/movie?api_key=c8468f73459078aba49ec924c8ffcf81&page=1&include_adult=false&year=2020&query=' + keyword, {
-                method: 'get'
-            }).then((response) => {
-                return response.json();
-            }).then((jsonData) => {
-                this.movies = jsonData.results;
-            });
-
-            // axios.get('http://www.omdbapi.com/?s=' + keyword + '&apikey=83e1fc9&y=2020&r=json')
-            // .then(response => {
-            //     this.movies = response.data.Search;
-            //     console.log(this.movies)
-            // })
-            // .catch(error => {
-            //     console.error('There is an error occured with movies: ', error);
-            // })
-            // .finally(() => {
-            // });
+        searchMovies (movies) {
+            this.movies = movies
+        },
+        indexMovieTitles (indexArray, searchList) {
+            indexArray.forEach((index) => {
+                searchList.addDoc({
+                    'title': index.title,
+                    'id': index.id
+                });
+            })
         }
-    },
-    mounted () {
-        // axios.get('http://www.omdbapi.com/?s=dawn&apikey=83e1fc9&y=2020&r=json')
-        //     .then(response => {
-        //         this.movies = response.data.Search;
-        //         console.log(this.movies)
-        //     })
-        //     .catch(error => {
-        //         console.error('There is an error occured with movies: ', error);
-        //     })
-        //     .finally(() => {
-        //     });
     }
 }
 </script>

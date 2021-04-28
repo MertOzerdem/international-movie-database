@@ -11,15 +11,20 @@
             <v-row no-gutters class="line-limiter line-count-2">
                 <v-col cols="12">
                     <v-card class="pa-2" outlined tile>
-                        {{title}}
+                        <h4>{{title}}</h4>
                     </v-card>
                 </v-col>
             </v-row>
             <v-row no-gutters class="line-limiter line-count-5">
                 <v-col cols="12">
-                    <v-card class="pa-2" outlined tile>
-                        {{overview}}
-                    </v-card>
+                    <v-tooltip bottom max-width="300" class="grey lighten-6">
+                        <template v-slot:activator="{ on, attrs }">
+                            <v-card class="pa-2" outlined tile v-bind="attrs" v-on="on">
+                                {{overview}}
+                            </v-card>
+                        </template>
+                        <span>{{overview}}</span>
+                    </v-tooltip>
                 </v-col>
             </v-row>
             <v-row no-gutters>
