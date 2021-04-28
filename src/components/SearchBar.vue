@@ -19,6 +19,13 @@
             v-model="keyword"
             placeholder="Enter a movie title to search">
             </v-text-field>
+            <v-btn
+            class="ml-2"
+            color="#AEDDFF"
+            elevation="2"
+            @click="targetKeywordEntered">
+            Search
+            </v-btn>
         </v-toolbar>
         <v-card 
         v-if="keyword && !isKeywordEdited"
@@ -29,12 +36,12 @@
         </v-card>
         <ul 
         class="suggestion-list pa-2 ma-4" 
-        v-if="suggestedResults[0] && isKeywordEdited">
+        v-if="suggestedResults[0] && isKeywordEdited && highlightKeyword()">
             <li 
             class="suggestion" 
             v-for="(suggestedResult, index) in suggestedResults" :key="index"
             @click="setKeyword(index)">
-                <div v-if="suggestedResults[index]">{{suggestedResults[index]}}</div>
+                <div class="suggestion-text" v-if="suggestedResults[index]">{{suggestedResults[index]}}</div>
             </li>
         </ul>
     </v-card>
@@ -87,6 +94,7 @@ export default {
                 }
             }
 
+            // this.returnSpan();
             console.log('full-text-search: ', this.suggestedResults)
         },
         indexMovieTitles (indexArray, searchList) {
@@ -102,6 +110,22 @@ export default {
             this.isKeywordEdited = true
 
             this.targetKeywordEntered()
+        },
+        highlightKeyword () {
+            setTimeout(() => {
+                let elements = document.getElementsByClassName('suggestion-text');
+                let capitalizedKeyword = this.capitalizeFirstLetter(this.keyword)
+                let regexp = new RegExp(capitalizedKeyword, 'g');
+                elements.forEach(element => {
+                    element.innerHTML = element.innerText
+                        .replace(regexp, '<span style="background-color: #F7F499;">' + capitalizedKeyword + '</span>');
+                })
+            },10)
+            
+            return true;
+        },
+        capitalizeFirstLetter(string) {
+            return string.charAt(0).toUpperCase() + string.slice(1);
         }
     },
     mounted: function () {
@@ -113,7 +137,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .suggestion-list {
     list-style: none;
     padding: 0;
@@ -137,5 +161,9 @@ export default {
 
 .suggestion:hover {
     background: rgba(224, 224, 224, 0.98);
+}
+
+.highlight {
+    background-color: #F7F499;
 }
 </style>

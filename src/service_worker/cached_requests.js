@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 const cacheName = 'v1'
+const version = 'v1::';
 
 // Call install Event
 self.addEventListener('install', event => {
@@ -30,8 +31,6 @@ self.addEventListener('activate', event => {
 });
 
 // Call Fetch Event
-var version = 'v1::';
-
 self.addEventListener("fetch", function (event) {
     console.log('WORKER: fetch event in progress.');
 
