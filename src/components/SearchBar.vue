@@ -12,11 +12,17 @@
         @keyup.enter="targetKeywordEntered">
             <v-text-field 
             hide-details 
-            append-icon="mdi-magnify" 
+            prepend-icon="mdi-magnify" 
             single-line 
-            @change="keyword = $event">
+            @change="keyword = $event"
+            placeholder="Enter a movie title to search">
             </v-text-field>
         </v-toolbar>
+        <v-card v-if="keyword"
+        class="d-flex justify-center mt-6"
+        flat
+        tile
+        ><h1>Search results for: {{ keyword }}</h1></v-card>
     </v-card>
 </template>
 
