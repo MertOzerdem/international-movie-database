@@ -19,11 +19,7 @@ self.addEventListener('activate', event => {
         caches.keys().then(cacheNames => {
             return Promise.all(
                 cacheNames.map(cache => {
-                    console.log('Map Cache')
-                    // if (cache !== cacheName) {
-                    //     console.log('Service Worker: Clear Old Cache')
-                    //     return caches.delete(cache);
-                    // }
+                    // Do stuff if necessary
                 })
             )
         })
@@ -47,13 +43,11 @@ self.addEventListener("fetch", function (event) {
                 .then(fetchedFromNetwork, unableToResolve)
                 .catch(unableToResolve);
 
-            console.log('WORKER: fetch event', cached ? '(cached)' : '(network)', event.request.url);
+            // console.log('WORKER: fetch event', cached ? '(cached)' : '(network)', event.request.url);
             return cached || networked;
 
             function fetchedFromNetwork(response) {
                 var cacheCopy = response.clone();
-
-                console.log('WORKER: fetch response from network.', event.request.url);
 
                 caches
                     .open(version + 'pages')
@@ -61,14 +55,14 @@ self.addEventListener("fetch", function (event) {
                         cache.put(event.request, cacheCopy);
                     })
                     .then(function () {
-                        console.log('WORKER: fetch response stored in cache.', event.request.url);
+                        console.info('WORKER: fetch response stored in cache.', event.request.url);
                     });
 
                 return response;
             }
 
             function unableToResolve() {
-                console.log('WORKER: fetch request failed in both cache and network.');
+                console.error('WORKER: fetch request failed in both cache and network.');
 
                 return new Response('<h1>Service Unavailable</h1>', {
                     status: 503,

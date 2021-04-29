@@ -1,6 +1,6 @@
 <template>
     <v-container class="grey lighten-2">
-        <SearchBar @keywordEntered="searchMovies"/>
+        <SearchBar @keywordEntered="setResultMovies"/>
         <v-row no-gutters>
             <v-col
             v-for="movie in movies"
@@ -34,21 +34,12 @@ export default {
     },
     data () {
         return {
-            movies: [],
-            searchDB: {}
+            movies: []
         }
     },
     methods: {
-        searchMovies (movies) {
+        setResultMovies (movies) {
             this.movies = movies
-        },
-        indexMovieTitles (indexArray, searchList) {
-            indexArray.forEach((index) => {
-                searchList.addDoc({
-                    'title': index.title,
-                    'id': index.id
-                });
-            })
         }
     }
 }

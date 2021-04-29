@@ -71,7 +71,7 @@ export default {
         id: {
             type: Number,
             required: true
-        },
+        }
     }
 }
 </script>

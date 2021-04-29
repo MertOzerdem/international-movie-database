@@ -10,12 +10,12 @@
         width="45px"/>
         <v-toolbar 
         dense
-        @keyup.enter="targetKeywordEntered">
+        @keyup.enter="fetchKeywordEntered">
             <v-text-field 
             hide-details 
             prepend-icon="mdi-magnify" 
             single-line 
-            @input="inputChanged"
+            @input="setRecommendation"
             v-model="keyword"
             placeholder="Enter a movie title to search">
             </v-text-field>
@@ -23,7 +23,7 @@
             class="ml-2"
             color="#AEDDFF"
             elevation="2"
-            @click="targetKeywordEntered">
+            @click="fetchKeywordEntered">
             Search
             </v-btn>
         </v-toolbar>
@@ -36,7 +36,7 @@
         </v-card>
         <ul 
         class="suggestion-list pa-2 ma-4" 
-        v-if="suggestedResults[0] && isKeywordEdited && highlightKeyword()">
+        v-if="suggestedResults[0] && isKeywordEdited && highlightSuggestedKeywords()">
             <li 
             class="suggestion" 
             v-for="(suggestedResult, index) in suggestedResults" :key="index"
@@ -61,7 +61,7 @@ export default {
         }
     },
     methods: {
-        targetKeywordEntered () {
+        fetchKeywordEntered () {
             fetch('https://api.themoviedb.org/3/search/movie' + 
                 '?api_key=c8468f73459078aba49ec924c8ffcf81&page=1&include_adult=false&year=2020&query=' + this.keyword, {
                 method: 'get'
@@ -70,7 +70,7 @@ export default {
             }).then((jsonData) => {
                 this.movies = jsonData.results;
 
-                this.indexMovieTitles(this.movies, this.searchDB)
+                this.setMovieTitlesSearchList(this.movies, this.searchDB)
 
                 this.$emit('keywordEntered', this.movies)
             }).catch(error => {
@@ -79,7 +79,7 @@ export default {
 
             this.isKeywordEdited = false
         },
-        inputChanged () {
+        setRecommendation () {
             this.isKeywordEdited = true
             this.suggestedResults = []
 
@@ -93,11 +93,8 @@ export default {
                     break
                 }
             }
-
-            // this.returnSpan();
-            console.log('full-text-search: ', this.suggestedResults)
         },
-        indexMovieTitles (indexArray, searchList) {
+        setMovieTitlesSearchList (indexArray, searchList) {
             indexArray.forEach((index) => {
                 searchList.addDoc({
                     'title': index.title,
@@ -109,12 +106,12 @@ export default {
             this.keyword = this.suggestedResults[index]
             this.isKeywordEdited = true
 
-            this.targetKeywordEntered()
+            this.fetchKeywordEntered()
         },
-        highlightKeyword () {
+        highlightSuggestedKeywords () {
             setTimeout(() => {
                 let elements = document.getElementsByClassName('suggestion-text');
-                let capitalizedKeyword = this.capitalizeFirstLetter(this.keyword)
+                let capitalizedKeyword = this.capitalizeFirstLetter(this.keyword).trim()
                 let regexp = new RegExp(capitalizedKeyword, 'g');
                 elements.forEach(element => {
                     element.innerHTML = element.innerText
@@ -124,7 +121,7 @@ export default {
             
             return true;
         },
-        capitalizeFirstLetter(string) {
+        capitalizeFirstLetter (string) {
             return string.charAt(0).toUpperCase() + string.slice(1);
         }
     },
