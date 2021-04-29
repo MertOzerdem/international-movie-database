@@ -55,6 +55,7 @@ export default {
         return {
             keyword: '',
             isKeywordEdited: false,
+            filterYear: '2020',
             movies: [],
             searchDB: {},
             suggestedResults: Array
@@ -68,7 +69,7 @@ export default {
             }).then((response) => {
                 return response.json();
             }).then((jsonData) => {
-                this.movies = jsonData.results;
+                this.movies = this.filterMoviesByYear(jsonData.results, this.filterYear);
 
                 this.setMovieTitlesSearchList(this.movies, this.searchDB)
 
@@ -123,6 +124,11 @@ export default {
         },
         capitalizeFirstLetter (string) {
             return string.charAt(0).toUpperCase() + string.slice(1);
+        },
+        filterMoviesByYear (movieList, filterYear) {
+            const regex = new RegExp(filterYear, 'g')
+
+            return movieList.filter(movie => ((movie || {}).release_date || '').match(regex))
         }
     },
     mounted: function () {
