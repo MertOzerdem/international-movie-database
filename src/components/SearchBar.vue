@@ -112,18 +112,14 @@ export default {
         highlightSuggestedKeywords () {
             setTimeout(() => {
                 let elements = document.getElementsByClassName('suggestion-text');
-                let capitalizedKeyword = this.capitalizeFirstLetter(this.keyword).trim()
-                let regexp = new RegExp(capitalizedKeyword, 'g');
+                let regexp = new RegExp('(' + this.keyword.trim() + ')', 'gi');
                 elements.forEach(element => {
                     element.innerHTML = element.innerText
-                        .replace(regexp, '<span style="background-color: #F7F499;">' + capitalizedKeyword + '</span>');
+                        .replace(regexp, '<span style="background-color: #F7F499;">$1</span>');
                 })
             },10)
             
             return true;
-        },
-        capitalizeFirstLetter (string) {
-            return string.charAt(0).toUpperCase() + string.slice(1);
         },
         filterMoviesByYear (movieList, filterYear) {
             const regex = new RegExp(filterYear, 'g')

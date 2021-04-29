@@ -5,9 +5,6 @@ const version = 'v1::';
 // Call install Event
 self.addEventListener('install', event => {
     console.info('Service Worker: Installed', event);
-    event.waitUntil(
-        caches.open(cacheName).then(cache => cache.add('/main.js'))
-    );
 });
 
 // Call Activate Event
