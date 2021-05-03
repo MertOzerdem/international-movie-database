@@ -134,7 +134,6 @@ export default {
                 if(searchResults[searchIndex]) {
                     suggestedResults.value[searchIndex] = (data.searchDB.documentStore
                         .getDoc(searchResults[searchIndex].ref) || {}).title
-                    console.log('index: ', suggestedResults.value[searchIndex])
                 } else {
                     break
                 }
