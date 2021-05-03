@@ -4,7 +4,7 @@
         <v-row no-gutters>
             <v-col
             v-for="movie in movies"
-            :key="movie.imdbID"
+            :key="movie.id"
             cols="12"
             xl="2"
             lg="3"
@@ -26,20 +26,23 @@
 <script>
 import Movie from '@/components/Movie'
 import SearchBar from '@/components/SearchBar'
+import { ref } from '@vue/composition-api'
 
 export default {
     components: {
         Movie,
         SearchBar
     },
-    data () {
-        return {
-            movies: []
+    setup () {
+        const movies = ref([])
+
+        const setResultMovies = (searchedMovies) => {
+            movies.value = searchedMovies
         }
-    },
-    methods: {
-        setResultMovies (movies) {
-            this.movies = movies
+
+        return { 
+            movies,
+            setResultMovies
         }
     }
 }
